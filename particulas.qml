@@ -60,43 +60,66 @@ Rectangle {
         }
         /*Timer {       //Utilizando burst()
             interval: 500; running: true; repeat: true
-            onTriggered: particles.burst(particles.emitRate)
+            //onTriggered: particles.burst(particles.emitRate)
+            onTriggered: getImage(picturesList, link )
         }*/
     }         
 
+    property int index: picturesList.count
+    property int currentIndex: 0
+    property int nextIndex: 1
     property var picturesList: [
         "images/Image1.png", "images/Image2.png", "images/Image3.png", "images/Image4.png", "images/Image5.png", "images/Image6.png", "images/Image7.png", "images/Image8.png", "images/Image9.png", "images/Image10.png",
         "images/Image11.png", "images/Image12.png", "images/Image13.png", "images/Image14.png", "images/Image15.png", "images/Image16.png", "images/Image17.png", "images/Image18.png", "images/Image19.png", "images/Image20.png"
     ]
 
     function getImage(arr){
-        var flag = "";
+        var link = ""
         for(var i = 0; i < arr.length ; i++){
             //var link = arr.find(i[arr])          //checar find()
             //var count = arr.length-1
             //console.log("Count: " + count )
 
-            flag = arr[i];
-            console.log("Imagen: " + arr[i] + " flag: " + flag )
+            link = arr[i];
+            console.log("Imagen: " + arr[i] + " Link: " + link )
         }
 //        var i = arr.find(index)
-        return flag;
+        return link;
+    }
+
+    function imageRandom(arr){
+        var door = true
+        if (!door){
+            var link = arr[Math.floor(Math.random() * arr.length)]
+            console.log("Imagen: " + link)
+        }
+        return link
     }
 
     //picturesList[picturesList.length]="index"     //
     //picturesList[picturesList.length]="images/Image1.png"
+    property var link: getImage(picturesList)
 
     ImageParticle{
+        id: imagesP
         //source: picturesList[picturesList.length]="images/Image3.png"            //"images/blueBlip.png"
-        property var link: getImage(picturesList)
-        source: link
-        system: particleSys
+        source: picturesList[currentIndex]             // picturesList[Math.floor(Math.random() * picturesList.length)]
+        system: particleSys        
+    }
+
+    Timer{
+        interval: 500; running: true; repeat: true
+        //onTriggered: imageRandom(picturesList)
+        onTriggered: {
+            currentIndex = nextIndex;
+            ++nextIndex;
+        }
     }
 
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            console.log(getImage(picturesList))
+            console.log(picturesList[currentIndex] )
         }
     }
 
