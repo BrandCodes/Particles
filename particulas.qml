@@ -113,6 +113,10 @@ Rectangle {
         onTriggered: {
             currentIndex = nextIndex;
             ++nextIndex;
+            if(currentIndex == 19){
+                currentIndex = 0
+                nextIndex = 1
+            }
         }
     }
 
